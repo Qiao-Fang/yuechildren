@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学校概况 | 在希望的田野上，点亮阅读之光</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-color: #C19A6B; /* 大地色 */
+            --accent-color: #7BA05B; /* 希望绿 */
+            --bg-color: #F5F5DC; /* 米色背景 */
+            --text-dark: #333;
+            --timeline-color: #7BA05B;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --hover-glow: rgba(123, 160, 91, 0.3);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #F5F5DC 0%, #e3f5ec 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding-top: 70px;
+        }
+        
+        /* 统一导航栏样式 */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            transition: all 0.4s ease;
+        }
+        
+        .nav-bar.scrolled {
+            padding: 0.8rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .nav-link {
+            color: #C19A6B;
+            text-decoration: none;
+            margin: 0 1.2rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            position: relative;
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-link i {
+            margin-right: 8px;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #7BA05B;
+            transform: translateY(-3px);
+        }
+        
+        .nav-link:hover i {
+            transform: scale(1.2);
+        }
+        
+        .nav-link.active {
+            color: #7BA05B;
+        }
+        
+        .nav-link.active::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #7BA05B;
+            border-radius: 2px;
+            animation: underline 0.4s ease-out;
+        }
+        
+        @keyframes underline {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        .nav-logo {
+            position: absolute;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            color: #C19A6B;
+            font-size: 1.2rem;
+        }
+        
+        .nav-logo i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+            color: #7BA05B;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #C19A6B;
+            cursor: pointer;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        /* 顶部横幅 - 修改为乡村学校背景 */
+        .school-header {
+            height: 300px;
+            background: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), 
+                        url('https://images.unsplash.com/photo-1593115057322-e94b77572f20?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #2c5e4b;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .school-header h1 {
+            font-size: 3.5rem;
+            font-family: 'STKaiti', 'KaiTi', '楷体', serif;
+            margin-bottom: 15px;
+            color: var(--main-color);
+            animation: fadeInDown 1s ease-out;
+        }
+        .school-header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            animation: fadeInUp 1s ease-out 0.3s forwards;
+            opacity: 0;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        
+        /* 学校简介部分 */
+        .profile-section {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: center;
+        }
+        .profile-image {
+            flex: 1;
+            min-width: 300px;
+            max-width: 450px;
+            height: 500px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            position: relative;
+        }
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .profile-image:hover img {
+            transform: scale(1.05);
+        }
+        .profile-info {
+            flex: 1;
+            min-width: 300px;
+            max-width: 600px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+        .profile-info h2 {
+            color: var(--main-color);
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            font-family: 'STKaiti', 'KaiTi', '楷体', serif;
+        }
+        .profile-info h2::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+        .profile-info p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        .facts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 25px;
+        }
+        .fact-item {
+            background: rgba(123, 160, 91, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .fact-icon {
+            background: var(--main-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        /* 学校发展时间轴 */
+        .timeline-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+            position: relative;
+        }
+        .timeline-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--main-color);
+            margin-bottom: 60px;
+            font-family: 'STKaiti', 'KaiTi', '楷体', serif;
+        }
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        /* 中轴线 */
+        .timeline::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            background: var(--timeline-color);
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 80px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.5s ease;
+        }
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 时间轴卡片容器 - 添加3D翻转效果 */
+        .flip-container {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        
+        .flipper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+        
+        .flip-container.flipped .flipper {
+            transform: rotateY(180deg);
+        }
+        
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .card-front {
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .card-back {
+            background-color: #fff;
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+            position: relative;
+        }
+        
+        /* 学校图片作为背面背景 */
+        .school-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+            z-index: 1;
+        }
+        
+        /* 背面内容容器 */
+        .back-content {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+        }
+        
+        .timeline-content {
+            position: relative;
+            width: calc(50% - 60px);
+            transition: all 0.4s ease;
+            z-index: 2;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content {
+            left: calc(50% + 60px);
+        }
+        .timeline-item:nth-child(odd) .timeline-content {
+            left: 0;
+        }
+        
+        .school-cover {
+            width: 160px;
+            height: 160px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .school-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .school-info h3 {
+            font-size: 1.5rem;
+            color: var(--main-color);
+            margin-bottom: 10px;
+        }
+        
+        /* 调整背面标题位置 */
+        .timeline-item:nth-child(odd) .back-content .school-info h3 {
+            text-align: right;
+        }
+        
+        .timeline-item:nth-child(even) .back-content .school-info h3 {
+            text-align: left;
+        }
+        
+        .school-info .school-date {
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        
+        .school-info p {
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+        
+        .achievement-list {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 10px;
+        }
+        .achievement-list span {
+            display: inline-block;
+            background: rgba(123, 160, 91, 0.1);
+            padding: 3px 10px;
+            border-radius: 15px;
+            margin: 3px;
+        }
+        
+        /* 朗读播放器 */
+        .audio-player {
+            position: absolute;
+            top: 20px;
+            width: 50px;
+            height: 50px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transform: scale(0);
+            transform-origin: center;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 3;
+        }
+        
+        /* 调整播放器位置 */
+        .timeline-item:nth-child(odd) .audio-player {
+            left: 20px;
+        }
+        
+        .timeline-item:nth-child(even) .audio-player {
+            right: 20px;
+        }
+        
+        .flip-container.flipped .audio-player {
+            transform: scale(1);
+        }
+        
+        .play-button {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #7BA05B, #5a8045);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        /* 播放时发光效果 */
+        .play-button.playing {
+            box-shadow: 0 0 15px 5px rgba(123, 160, 91, 0.7);
+            animation: glow 1.5s infinite alternate;
+        }
+        
+        /* 时间轴节点 */
+        .timeline-dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 24px;
+            height: 24px;
+            background: var(--timeline-color);
+            border: 4px solid white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            box-shadow: 0 0 0 6px rgba(123, 160, 91, 0.3);
+            transition: all 0.3s ease;
+        }
+        .timeline-item:hover .timeline-dot {
+            transform: translate(-50%, -50%) scale(1.2);
+            box-shadow: 0 0 0 8px var(--hover-glow);
+        }
+        
+      /* 版权区样式 */
+        .copyright-footer {
+            background: rgba(123,160,91,0.1);
+            color: #578863;
+            text-align: center;
+            padding: 1.5rem;
+            border-top: 1px solid rgba(123,160,91,0.15);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1100px) {
+            .nav-link {
+                margin: 0 0.8rem;
+                font-size: 0.95rem;
+            }
+            
+            .nav-logo {
+                left: 20px;
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.98);
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+                transition: clip-path 0.4s ease;
+                gap: 15px;
+            }
+            
+            .nav-links.active {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            }
+            
+            .nav-link {
+                margin: 5px 0;
+                padding: 10px 20px;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-logo {
+                left: 50%;
+                transform: translateX(-50%) translateY(-50%);
+            }
+
+            /* 响应式时间轴 */
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-content {
+                width: calc(100% - 80px);
+                left: 80px !important;
+                margin-left: 0 !important;
+            }
+            
+            .timeline-item:nth-child(even) .timeline-content,
+            .timeline-item:nth-child(odd) .timeline-content {
+                left: 80px;
+            }
+            
+            .timeline-dot {
+                left: 30px;
+            }
+            
+            .timeline-item:nth-child(odd) .audio-player,
+            .timeline-item:nth-child(even) .audio-player {
+                left: 20px;
+                right: auto;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .school-header h1 {
+                font-size: 2.8rem;
+            }
+            
+            .school-header p {
+                font-size: 1rem;
+            }
+        }
+        
+        /* 动画 */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 10px 3px rgba(123, 160, 91, 0.5);
+            }
+            to {
+                box-shadow: 0 0 20px 8px rgba(123, 160, 91, 0.8);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 统一导航栏 -->
+    <nav class="nav-bar" id="navBar">
+        <div class="nav-logo">
+            <i class="fas fa-book"></i>
+            <span>点亮阅读之光</span>
+        </div>
+        
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <div class="nav-links" id="navLinks">
+            <a href="学校概况.html" class="nav-link active">
+                <i class="fas fa-school"></i>学校概况
+            </a>
+            <a href="人物故事.html" class="nav-link">
+                <i class="fas fa-user"></i>人物故事
+            </a>
+            <a href="为你读书.html" class="nav-link">
+                <i class="fas fa-book-reader"></i>为你读书
+            </a>
+            <a href="行动支持.html" class="nav-link">
+                <i class="fas fa-hands-helping"></i>行动支持
+            </a>
+        </div>
+    </nav>
+
+    <!-- 顶部横幅 -->
+    <header class="school-header">
+        <h1>学校概况</h1>
+        <p>兰考县杜庄小学 - 一所乡村小学的教育坚守与阅读推广之路</p>
+    </header>
+
+    <!-- 学校简介部分 -->
+    <section class="profile-section">
+        <div class="profile-image">
+            <img src="https://images.unsplash.com/photo-1593115057322-e94b77572f20?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="杜庄小学">
+        </div>
+        <div class="profile-info">
+            <h2>杜庄小学</h2>
+            <p>杜庄小学始建于1978年，位于河南省兰考县，是一所典型的乡村小学。学校现有6个年级，120名学生，其中大部分是留守儿童。</p>
+            <p>学校设施虽然简陋，但师生们依然保持着对知识的渴望和对未来的憧憬。在张老师的推动下，学校建立了图书角，并定期开展阅读活动。</p>
+            <p>近年来，学校尝试引入数字阅读，但由于网络条件和设备限制，进展缓慢。目前仅有几台捐赠的平板电脑供高年级学生轮流使用。</p>
+            
+            <div class="facts-grid">
+                <div class="fact-item">
+                    <div class="fact-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div>
+                        <strong>学生人数</strong>
+                        <div>120名学生</div>
+                    </div>
+                </div>
+                <div class="fact-item">
+                    <div class="fact-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div>
+                        <strong>教师人数</strong>
+                        <div>8名教师</div>
+                    </div>
+                </div>
+                <div class="fact-item">
+                    <div class="fact-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div>
+                        <strong>图书数量</strong>
+                        <div>800余册</div>
+                    </div>
+                </div>
+                <div class="fact-item">
+                    <div class="fact-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <strong>建校时间</strong>
+                        <div>1978年</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 学校发展时间轴 -->
+    <section class="timeline-section">
+        <h2>学校发展历程</h2>
+        <div class="timeline">
+            <!-- 事件 1 -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="flip-container" onclick="flipCard(this)">
+                        <div class="flipper">
+                            <div class="card-front">
+                                <div class="school-cover">
+                                    <img src="https://images.unsplash.com/photo-1593115057322-e94b77572f20?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="杜庄小学建校">
+                                </div>
+                                <div class="school-info">
+                                    <h3>学校建校</h3>
+                                    <div class="school-date">1978年</div>
+                                </div>
+                            </div>
+                            <div class="card-back">
+                                <img class="school-bg" src="https://images.unsplash.com/photo-1593115057322-e94b77572f20?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="杜庄小学建校">
+                                <div class="back-content">
+                                    <div class="school-info">
+                                        <h3>学校建校</h3>
+                                        <p>杜庄小学始建于1978年，最初只有三间简陋的教室，为当地农村孩子提供了接受基础教育的机会。</p>
+                                        <div class="achievement-list">
+                                            <strong>重要意义：</strong>
+                                            <span>乡村教育起步</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="audio-player">
+                            <div class="play-button" onclick="playAudio(event, 'audio1')">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <audio id="audio1" src="音频/学校建校.mp3"></audio>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+            
+            <!-- 事件 2 -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="flip-container" onclick="flipCard(this)">
+                        <div class="flipper">
+                            <div class="card-front">
+                                <div class="school-cover">
+                                    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="张老师到校">
+                                </div>
+                                <div class="school-info">
+                                    <h3>张老师到校</h3>
+                                    <div class="school-date">2008年</div>
+                                </div>
+                            </div>
+                            <div class="card-back">
+                                <img class="school-bg" src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="张老师到校">
+                                <div class="back-content">
+                                    <div class="school-info">
+                                        <h3>张老师到校</h3>
+                                        <p>张老师从师范学校毕业后，放弃城市工作机会，选择回到家乡任教，为杜庄小学带来了新的教育理念和活力。</p>
+                                        <div class="achievement-list">
+                                            <strong>重要意义：</strong>
+                                            <span>教育理念更新</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="audio-player">
+                            <div class="play-button" onclick="playAudio(event, 'audio2')">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <audio id="audio2" src="音频/张老师到校.mp3"></audio>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+            
+            <!-- 事件 3 -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="flip-container" onclick="flipCard(this)">
+                        <div class="flipper">
+                            <div class="card-front">
+                                <div class="school-cover">
+                                    <img src="https://images.unsplash.com/photo-1588072432836-e100327d50a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="阅读推广启动">
+                                </div>
+                                <div class="school-info">
+                                    <h3>阅读推广启动</h3>
+                                    <div class="school-date">2015年</div>
+                                </div>
+                            </div>
+                            <div class="card-back">
+                                <img class="school-bg" src="https://images.unsplash.com/photo-1588072432836-e100327d50a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="阅读推广启动">
+                                <div class="back-content">
+                                    <div class="school-info">
+                                        <h3>阅读推广启动</h3>
+                                        <p>在张老师的推动下，杜庄小学正式启动阅读推广计划，建立图书角，开展阅读活动，让更多孩子爱上阅读。</p>
+                                        <div class="achievement-list">
+                                            <strong>重要意义：</strong>
+                                            <span>阅读氛围形成</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="audio-player">
+                            <div class="play-button" onclick="playAudio(event, 'audio3')">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <audio id="audio3" src="音频/阅读推广启动.mp3"></audio>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+            
+            <!-- 事件 4 -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="flip-container" onclick="flipCard(this)">
+                        <div class="flipper">
+                            <div class="card-front">
+                                <div class="school-cover">
+                                    <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="图书角建立">
+                                </div>
+                                <div class="school-info">
+                                    <h3>图书角建立</h3>
+                                    <div class="school-date">2017年</div>
+                                </div>
+                            </div>
+                            <div class="card-back">
+                                <img class="school-bg" src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="图书角建立">
+                                <div class="back-content">
+                                    <div class="school-info">
+                                        <h3>图书角建立</h3>
+                                        <p>通过社会捐赠和学校自筹，杜庄小学建立了第一个图书角，藏书量达到300册，为学生提供了丰富的阅读资源。</p>
+                                        <div class="achievement-list">
+                                            <strong>重要意义：</strong>
+                                            <span>阅读资源丰富</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="audio-player">
+                            <div class="play-button" onclick="playAudio(event, 'audio4')">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <audio id="audio4" src="音频/图书角建立.mp3"></audio>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+            
+            <!-- 事件 5 -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="flip-container" onclick="flipCard(this)">
+                        <div class="flipper">
+                            <div class="card-front">
+                                <div class="school-cover">
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="数字阅读尝试">
+                                </div>
+                                <div class="school-info">
+                                    <h3>数字阅读尝试</h3>
+                                    <div class="school-date">2020年</div>
+                                </div>
+                            </div>
+                            <div class="card-back">
+                                <img class="school-bg" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="数字阅读尝试">
+                                <div class="back-content">
+                                    <div class="school-info">
+                                        <h3>数字阅读尝试</h3>
+                                        <p>学校尝试引入数字阅读，获得几台捐赠的平板电脑，但由于网络条件和设备限制，数字阅读推广仍面临挑战。</p>
+                                        <div class="achievement-list">
+                                            <strong>重要意义：</strong>
+                                            <span>教育技术探索</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="audio-player">
+                            <div class="play-button" onclick="playAudio(event, 'audio5')">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <audio id="audio5" src="音频/数字阅读尝试.mp3"></audio>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+        </div> <!-- 结束.timeline容器 -->
+    </section>
+
+     <!-- 版权区 -->
+    <footer class="copyright-footer">
+        Copyright @乡村教育专题网页 rights reserved
+    </footer>
+
+    <script>
+        // 导航栏滚动效果
+        const navBar = document.getElementById('navBar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navBar.classList.add('scrolled');
+            } else {
+                navBar.classList.remove('scrolled');
+            }
+        });
+
+        // 移动端菜单切换
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = mobileMenuBtn.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // 为当前页面设置活动状态
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('.nav-link');
+            links.forEach(link => {
+                if (link.getAttribute('href') === '学校概况.html') {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        });
+
+        // 滚动动画效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            
+            function checkScroll() {
+                timelineItems.forEach(item => {
+                    const itemTop = item.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (itemTop < windowHeight * 0.8) {
+                        item.classList.add('visible');
+                    }
+                });
+            }
+            
+            // 初始检查
+            checkScroll();
+            
+            // 滚动时检查
+            window.addEventListener('scroll', checkScroll);
+            
+            // 初始化所有音频元素
+            const audioElements = document.querySelectorAll('audio');
+            audioElements.forEach(audio => {
+                audio.volume = 0.5; // 设置默认音量
+                // 监听播放结束事件
+                audio.addEventListener('ended', function() {
+                    const playButton = this.previousElementSibling;
+                    playButton.classList.remove('playing');
+                    playButton.innerHTML = '<i class="fas fa-play"></i>';
+                });
+            });
+        });
+        
+        // 卡片翻转功能
+        function flipCard(element) {
+            element.classList.toggle('flipped');
+        }
+        
+        // 播放/暂停音频功能
+        function playAudio(event, audioId) {
+            event.stopPropagation(); // 防止触发父元素的点击事件
+            
+            const audio = document.getElementById(audioId);
+            const playButton = event.currentTarget;
+            
+            if (audio.paused) {
+                audio.play();
+                playButton.classList.add('playing');
+                playButton.innerHTML = '<i class="fas fa-pause"></i>';
+            } else {
+                audio.pause();
+                playButton.classList.remove('playing');
+                playButton.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        }
+    </script>
+</body>
+</html>
